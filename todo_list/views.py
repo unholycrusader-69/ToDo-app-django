@@ -14,13 +14,13 @@ import random
 def nav(request):
     today = date.today()
     week_dates = [today + timedelta(days=i) for i in range(7)]
-    todos = ToDo.objects.filter(deadline__in=week_dates).order_by('deadline')
+    
+    todos = ToDo.objects.filter(user=request.user, deadline__in=week_dates).order_by('deadline')
 
     calendar_data = {}
     for day in week_dates:
         calendar_data[day] = todos.filter(deadline=day)
 
-    
     note, _ = UserNote.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -37,12 +37,14 @@ def nav(request):
         'form': form,
     })
 
+
 @login_required
 def todo_list_view(request):
     if request.method == 'POST':
         form = ToDoForm(request.POST)
         if form.is_valid():
             todo = form.save(commit=False)
+            todo.user = request.user
 
             hour = int(request.POST.get('deadline_hour'))
             minute = int(request.POST.get('deadline_minute'))
@@ -72,7 +74,7 @@ def toggle_finished(request, pk):
     print("After:", todo.finished)
     return redirect('todo_list')
 
-
+@login_required
 def delete_task(request,pk):
     todo = get_object_or_404(ToDo, pk = pk)
     todo.delete()
@@ -151,6 +153,7 @@ def edit_task(request,pk):
 
     return render(request, 'edit_task.html', {'form': form, 'todo': todo})
 
+@login_required
 def weekly_calendar(request):
     today = date.today()
     week = [today + timedelta(days=i) for i in range(7)]
@@ -169,7 +172,7 @@ def review_page(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            print("FORM IS VALID — saving review...")  # Debug line
+            print("FORM IS VALID — saving review...")
             Review.objects.create(
                 user=request.user,
                 message=form.cleaned_data['message']
