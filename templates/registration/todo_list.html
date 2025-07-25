@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  {% load static %}
+<head>
+  <title>Task List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f5f0 url("https://www.transparenttextures.com/patterns/graphy.png");
+      font-family: 'Patrick Hand', cursive;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: #121212 url("https://www.transparenttextures.com/patterns/graphy.png");
+      color: #ddd;
+    }
+
+    body.dark-mode .notebook {
+      background-color: #222;
+      border-color: #444;
+      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    }
+
+    body.dark-mode .list-group-item {
+      background-color: #222;
+      border-bottom: 2px dashed #555;
+      color: #ddd;
+    }
+
+    body.dark-mode .list-group-item label {
+      color: #ddd;
+    }
+
+    body.dark-mode .sticky-note {
+      background: #333;
+      color: #eee;
+      border-color: #666;
+      box-shadow: 6px 6px 15px rgba(255,255,255,0.1);
+    }
+
+    body.dark-mode .sticky-note::after {
+      background: rgba(255,255,255,0.05);
+    }
+
+    body.dark-mode .btn-primary {
+      background-color: #bb86fc;
+      border-color: #bb86fc;
+      color: #121212;
+    }
+
+    body.dark-mode .btn-warning {
+      background-color: #fbbf24;
+      border-color: #fbbf24;
+      color: #121212;
+    }
+
+    body.dark-mode .btn-danger {
+      background-color: #cf6679;
+      border-color: #cf6679;
+      color: #121212;
+    }
+
+    h1 {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #2f2f2f;
+      transition: color 0.3s ease;
+    }
+
+    body.dark-mode h1 {
+      color: #ddd;
+    }
+
+    .notebook {
+      background-color: #fffefb;
+      border: 2px solid #e2ded6;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.08);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      padding: 6px 14px;
+    }
+
+    .list-group-item {
+      background-color: #fffefb;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 2px dashed #bcbcbc;
+      font-size: 1.05rem;
+      padding: 15px;
+      margin-bottom: 0;
+      font-family: 'Patrick Hand', cursive;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+
+    .form-check-label, .text-muted, small {
+      font-size: 1.05rem;
+    }
+
+    .form-check-input {
+      transform: scale(1.2);
+      margin-right: 10px;
+    }
+
+    .btn-sm {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .btn-primary, .btn-warning, .btn-danger {
+      border-radius: 20px;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .d-flex.align-items-center > form {
+      margin-left: 10px;
+    }
+
+    .task-container {
+      background-color: #fdfcf9;
+      border: 2px solid #e0ddd0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Dark mode toggle button styling */
+    #darkModeToggle {
+      font-family: 'Shadows Into Light', cursive;
+      cursor: pointer;
+      background-color: #fffbd5;
+      border: 1.5px solid #e0c97f;
+      padding: 8px 14px;
+      border-radius: 8px;
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.1);
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-left: 15px;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    #darkModeToggle:hover {
+      background-color: #e0c97f;
+      color: #3e2f00;
+    }
+
+    body.dark-mode #darkModeToggle {
+      background-color: #333;
+      border-color: #666;
+      color: #eee;
+    }
+
+    body.dark-mode #darkModeToggle:hover {
+      background-color: #555;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5 notebook">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center">
+        <a href="{% url 'nav' %}" class="sticky-note">← Back to Calendar</a>
+        <button id="darkModeToggle" title="Toggle Dark Mode">🌓 Dark Mode</button>
+      </div>
+
+      <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+      <style>
+        .sticky-note {
+          font-family: 'Shadows Into Light', cursive;
+          font-size: 1.4rem;
+          background: #fffbd5;
+          color: #333;
+          text-decoration: none;
+          padding: 18px 40px;
+          display: inline-block;
+          border: 1px solid #e0c97f;
+          box-shadow: 6px 6px 15px rgba(0,0,0,0.1);
+          transform: rotate(-2deg);
+          transition: all 0.3s ease;
+          position: relative;
+          border-radius: 8px;
+        }
+      
+        .sticky-note::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          right: -8px;
+          width: 40px;
+          height: 40px;
+          background: rgba(0,0,0,0.05);
+          transform: rotate(45deg);
+          z-index: -1;
+          border-radius: 4px;
+        }
+      
+        .sticky-note:hover {
+          box-shadow: 8px 8px 20px rgba(0,0,0,0.15);
+          transform: rotate(0deg) scale(1.02);
+        }
+      </style>
+      
+        <div>
+          {% if user.is_authenticated %}
+            <span class="me-2">Hello, {{ user.username }}!</span>
+            <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-secondary">Logout</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary me-2">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-sm btn-outline-success">Sign Up</a>
+          {% endif %}
+        </div>
+    </div>
+
+    <h1>Your Tasks</h1>
+    <audio id="deadline-sound" src="{% static 'audio/notification.mp3' %}" preload="auto"></audio>
+
+    <form method="POST" class="mb-4">
+      {% csrf_token %}
+      <div class="mb-2">
+        {{ form.title.label_tag }}<br>
+        {{ form.title }}
+      </div>
+      <div class="mb-2">
+        {{ form.deadline.label_tag }}<br>
+        {{ form.deadline }}
+      </div>
+      <div class="mb-2">
+        <label>Deadline Time</label><br>
+        {{ form.deadline_hour }} :
+        {{ form.deadline_minute }}
+        {{ form.deadline_ampm }}
+      </div>
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+
+    <div class="task-container">
+      <ul class="list-group">
+        {% for todo in todos %}
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              data-deadline="{{ todo.deadline|date:'Y-m-d' }}"
+              data-deadline-time="{{ todo.deadline_time|time:'H:i' }}"
+              id="task-{{ todo.id }}">
+
+            <form method="POST" action="{% url 'toggle_finished' todo.id %}" class="mb-0">
+              {% csrf_token %}
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       id="todo-{{ todo.id }}"
+                       data-id="{{ todo.id }}"
+                       {% if todo.completed %}checked{% endif %}>
+                <label class="form-check-label {% if todo.completed %}text-decoration-line-through text-muted{% endif %}">
+                  {{ todo.title }}
+                  {% if todo.deadline or todo.deadline_time %}
+                    <small class="text-muted">(Due:
+                      {% if todo.deadline %}
+                        {{ todo.deadline|date:"F j, Y" }}
+                      {% endif %}
+                      {% if todo.deadline and todo.deadline_time %}
+                        at
+                      {% endif %}
+                      {% if todo.deadline_time and todo.deadline_time|time:"H:i" != "00:00" %}
+                        {{ todo.deadline_time|time:"h:i A" }}
+                      {% else %}
+                        <span class="text-muted">No time set</span>
+                      {% endif %}
+                    )</small>
+                  {% endif %}
+                </label>
+              </div>
+            </form>
+
+            <div class="d-flex align-items-center">
+              <form method="GET" action="{% url 'edit_task' todo.id %}" class="me-2 mb-0">
+                <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+              </form>
+              <form method="POST" action="{% url 'delete_task' todo.id %}" class="mb-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+</div>
+
+<script>
+  // Dark mode toggle + persistence
+  const darkModeToggle = document.getElementById('darkModeToggle');
+
+  function setDarkMode(enabled) {
+    if (enabled) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled');
+      darkModeToggle.textContent = '☀️';
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'disabled');
+      darkModeToggle.textContent = '🌙';
+    }
+  }
+
+  darkModeToggle.addEventListener('click', () => {
+    const enabled = document.body.classList.contains('dark-mode');
+    setDarkMode(!enabled);
+  });
+
+  // Initialize on load based on localStorage
+  document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      setDarkMode(true);
+    } else {
+      setDarkMode(false);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+      const key = checkbox.id;
+      const saved = localStorage.getItem(key);
+      if (saved === 'true') {
+        checkbox.checked = true;
+      } else if (saved === 'false') {
+        checkbox.checked = false;
+      }
+
+      checkbox.addEventListener('change', function () {
+        localStorage.setItem(key, checkbox.checked);
+        checkbox.form.submit();
+      });
+    });
+  });
+</script>
+
+<script>
+  function checkDeadlinesAndPlaySound() {
+    const now = new Date();
+    const currentDate = now.toISOString().slice(0, 10);  
+    const currentTime = now.getHours().toString().padStart(2, '0') + ':' +
+                        now.getMinutes().toString().padStart(2, '0');
+
+    document.querySelectorAll('li[data-deadline]').forEach(item => {
+      const deadlineDate = item.getAttribute('data-deadline');
+      const deadlineTime = item.getAttribute('data-deadline-time');
+      const hasAlerted = item.dataset.alerted;
+
+      if (deadlineDate === currentDate && deadlineTime === currentTime && !hasAlerted) {
+        document.getElementById('deadline-sound').play();
+        item.dataset.alerted = 'true';  
+      }
+    });
+  }
+
+  setInterval(checkDeadlinesAndPlaySound, 10000);
+</script>
+</body>
+</html>

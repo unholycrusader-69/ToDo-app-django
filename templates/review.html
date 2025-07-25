@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Leave a Review</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f1f1e6;
+      font-family: 'Helvetica Neue', sans-serif;
+      padding: 0;
+      margin: 0;
+    }
+
+    .review-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    .review-box {
+      background-color: #fffdf6;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      width: 100%;
+      font-family: 'Shadows Into Light', cursive;
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-family: 'Shadows Into Light', cursive;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 1rem;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.2rem;
+      background-color: #fff;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      resize: vertical;
+    }
+
+    button[type="submit"] {
+      display: block;
+      margin: 1.5rem auto 0;
+      padding: 0.5rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      background-color: #f7c26d;
+      border: none;
+      font-family: 'Shadows Into Light', cursive;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #e0a546;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: -2.5rem;
+      left: 0;
+    }
+
+    .back-btn a {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.1rem;
+      background-color: #fff3cd;
+      border: 1px solid #f0ad4e;
+      padding: 6px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .back-btn a:hover {
+      background-color: #ffe8a1;
+    }
+  </style>
+</head>
+<body>
+  <div class="review-container">
+    <div class="review-box">
+
+      <!-- Back to Home Button -->
+      <div class="back-btn">
+        <a href="{% url 'nav' %}">&larr; Back</a>
+      </div>
+
+      <h2>Leave your review here. Thank You!!</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Type your thoughts..." required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+
+    </div>
+  </div>
+</body>
+</html>
