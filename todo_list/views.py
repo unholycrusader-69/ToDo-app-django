@@ -62,7 +62,7 @@ def todo_list_view(request):
     else:
         form = ToDoForm()
 
-    todos = ToDo.objects.all()
+    todos = ToDo.objects.filter(user=request.user)
     return render(request, 'registration/todo_list.html', {'form': form,'todos': todos})
 
 @require_POST
