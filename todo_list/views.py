@@ -10,6 +10,8 @@ from datetime import time,date,datetime,timedelta
 from django.utils import timezone
 import random
 
+#superuser - Banana,kingkong
+
 @login_required
 def nav(request):
     today = date.today()
