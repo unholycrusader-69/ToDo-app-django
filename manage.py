@@ -15,20 +15,6 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    
-    
-    from django.contrib.auth import get_user_model
-
-    if os.environ.get("CREATE_SUPERUSER") == "1":
-        import django
-        django.setup()
-        User = get_user_model()
-        if not User.objects.filter(username="Banana").exists():
-            User.objects.create_superuser("Banana", "dedhiadhanya@gmail.com", "kingkong")
-            print("Superuser created successfully.")
-        else:
-            print("Superuser already exists.")
-
     execute_from_command_line(sys.argv)
 
 
