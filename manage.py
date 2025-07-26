@@ -16,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    import os
+    
     from django.contrib.auth import get_user_model
 
     if os.environ.get("CREATE_SUPERUSER") == "1":
