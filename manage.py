@@ -23,8 +23,8 @@ def main():
         import django
         django.setup()
         User = get_user_model()
-        if not User.objects.filter(username="admin").exists():
-            User.objects.create_superuser("admin", "admin@example.com", "yourpassword")
+        if not User.objects.filter(username="Banana").exists():
+            User.objects.create_superuser("Banana", "dedhiadhanya@gmail.com", "kingkong")
             print("Superuser created successfully.")
         else:
             print("Superuser already exists.")
